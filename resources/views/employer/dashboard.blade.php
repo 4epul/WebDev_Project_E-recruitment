@@ -152,7 +152,7 @@
                     </div>
                     <h4 class="fw-bold mb-3">Applications</h4>
                     <p class="mb-4 opacity-90">Review and manage candidate applications for your jobs</p>
-                    <a href="#" class="btn dashboard-btn btn-light text-info">
+                    <a href="{{ route('employer.applications.index') }}" class="btn dashboard-btn btn-light text-info">
                         <i class="bi bi-file-text me-2"></i>View Applications
                     </a>
                 </div>

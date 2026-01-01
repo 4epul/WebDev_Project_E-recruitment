@@ -177,6 +177,11 @@
                                 <i class="bi bi-briefcase"></i> My Jobs
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('employer.applications.index') }}">
+                                <i class="bi bi-inbox"></i> Applications
+                            </a>
+                        </li>
                         @elseif(Auth::user()->role === 'jobseeker')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('jobseeker.dashboard') }}">
@@ -189,7 +194,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="{{ route('jobseeker.applications.index') }}">
                                 <i class="bi bi-file-earmark-text"></i> My Applications
                             </a>
                         </li>

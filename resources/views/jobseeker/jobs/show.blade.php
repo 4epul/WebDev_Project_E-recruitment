@@ -10,7 +10,7 @@
     .job-header {
         background: linear-gradient(135deg, #2557a7 0%, #164081 100%);
         color: white;
-        padding: 50px 0;
+        padding: 50px 20px;
         margin-bottom: 40px;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -183,6 +183,13 @@
 
 <div class="job-details-container">
     <div class="container">
+        <!-- Error Message -->
+        @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        @endif
         <div class="container">
             <!-- Back Button - Outside Header -->
             <div class="mb-3">
@@ -270,9 +277,9 @@
         <div class="col-lg-4">
             <div class="job-sidebar-card">
                 <!-- Apply Button -->
-                <button class="btn btn-apply">
+                <a href="{{ route('jobseeker.applications.create', $job->id) }}" class="btn btn-apply">
                     <i class="bi bi-send-fill me-2"></i>Apply Now
-                </button>
+                </a>
 
                 <button class="btn btn-save">
                     <i class="bi bi-bookmark me-2"></i>Save Job
