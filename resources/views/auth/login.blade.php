@@ -131,13 +131,18 @@
 
                             <div class="mb-3">
                                 <label for="password" class="form-label">{{ __('Password') }}</label>
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Enter your password">
-
-                                @error('password')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
+                                <div class="input-group">
+                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
+                                        name="password" required autocomplete="current-password">
+                                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                        <i class="bi bi-eye" id="toggleIcon"></i>
+                                    </button>
+                                    @error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
                             </div>
 
                             <div class="mb-3">
@@ -177,4 +182,34 @@
         </div>
     </div>
 </div>
+
+<style>
+    .btn-outline-secondary {
+        border-color: #ced4da;
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: #e9ecef;
+        border-color: #ced4da;
+        color: #495057;
+    }
+</style>
+
+<script>
+    // Toggle Password Visibility
+    document.getElementById('togglePassword').addEventListener('click', function() {
+        const password = document.getElementById('password');
+        const icon = document.getElementById('toggleIcon');
+
+        if (password.type === 'password') {
+            password.type = 'text';
+            icon.classList.remove('bi-eye');
+            icon.classList.add('bi-eye-slash');
+        } else {
+            password.type = 'password';
+            icon.classList.remove('bi-eye-slash');
+            icon.classList.add('bi-eye');
+        }
+    });
+</script>
 @endsection

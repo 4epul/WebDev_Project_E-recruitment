@@ -57,6 +57,49 @@
         transform: translateY(-2px);
         box-shadow: 0 8px 20px rgba(37, 87, 167, 0.3);
     }
+
+    .btn-outline-secondary {
+        border-color: #ced4da;
+        border-left: none;
+        border-radius: 0 8px 8px 0;
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: #e9ecef;
+        border-color: #ced4da;
+        color: #495057;
+    }
+
+    .input-group .form-control {
+        border-right: none;
+        border-radius: 8px 0 0 8px;
+    }
+
+    .password-requirements ul {
+        list-style: none;
+        padding-left: 0;
+        margin-top: 0.5rem;
+    }
+
+    .password-requirements li {
+        padding-left: 25px;
+        position: relative;
+        font-size: 0.875rem;
+        color: #6c757d;
+    }
+
+    .password-requirements li::before {
+        content: "✗";
+        position: absolute;
+        left: 5px;
+        color: #dc3545;
+        font-weight: bold;
+    }
+
+    .password-requirements li.valid::before {
+        content: "✓";
+        color: #28a745;
+    }
 </style>
 
 <div class="register-container">
@@ -98,7 +141,7 @@
                                 </div>
                             </div>
 
-                            <!-- NEW ROLE DROPDOWN -->
+                            <!-- Role Dropdown -->
                             <div class="row mb-3">
                                 <label for="role" class="col-md-4 col-form-label text-md-end form-label">{{ __('Register As') }}</label>
 
@@ -117,25 +160,48 @@
                                 </div>
                             </div>
 
+                            <!-- Password with Eye Button -->
                             <div class="row mb-3">
                                 <label for="password" class="col-md-4 col-form-label text-md-end form-label">{{ __('Password') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                                    <div class="input-group">
+                                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                                        <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                            <i class="bi bi-eye" id="toggleIcon"></i>
+                                        </button>
+                                    </div>
 
                                     @error('password')
-                                    <span class="invalid-feedback" role="alert">
+                                    <span class="d-block invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
+
+                                    <div class="password-requirements">
+                                        <small class="text-muted">Password must contain:</small>
+                                        <ul class="mb-0">
+                                            <li id="req-length">At least 8 characters</li>
+                                            <li id="req-uppercase">One uppercase letter (A-Z)</li>
+                                            <li id="req-lowercase">One lowercase letter (a-z)</li>
+                                            <li id="req-number">One number (0-9)</li>
+                                            <li id="req-special">One special character (!@#$%^&*)</li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
 
+                            <!-- Confirm Password with Eye Button -->
                             <div class="row mb-3">
                                 <label for="password-confirm" class="col-md-4 col-form-label text-md-end form-label">{{ __('Confirm Password') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                    <div class="input-group">
+                                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                        <button class="btn btn-outline-secondary" type="button" id="togglePasswordConfirm">
+                                            <i class="bi bi-eye" id="toggleIconConfirm"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -153,4 +219,78 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Toggle Password Visibility
+    document.getElementById('togglePassword').addEventListener('click', function() {
+        const password = document.getElementById('password');
+        const icon = document.getElementById('toggleIcon');
+
+        if (password.type === 'password') {
+            password.type = 'text';
+            icon.classList.remove('bi-eye');
+            icon.classList.add('bi-eye-slash');
+        } else {
+            password.type = 'password';
+            icon.classList.remove('bi-eye-slash');
+            icon.classList.add('bi-eye');
+        }
+    });
+
+    // Toggle Confirm Password Visibility
+    document.getElementById('togglePasswordConfirm').addEventListener('click', function() {
+        const password = document.getElementById('password-confirm');
+        const icon = document.getElementById('toggleIconConfirm');
+
+        if (password.type === 'password') {
+            password.type = 'text';
+            icon.classList.remove('bi-eye');
+            icon.classList.add('bi-eye-slash');
+        } else {
+            password.type = 'password';
+            icon.classList.remove('bi-eye-slash');
+            icon.classList.add('bi-eye');
+        }
+    });
+
+    // Real-time Password Validation
+    document.getElementById('password').addEventListener('input', function() {
+        const password = this.value;
+
+        // Check length
+        if (password.length >= 8) {
+            document.getElementById('req-length').classList.add('valid');
+        } else {
+            document.getElementById('req-length').classList.remove('valid');
+        }
+
+        // Check uppercase
+        if (/[A-Z]/.test(password)) {
+            document.getElementById('req-uppercase').classList.add('valid');
+        } else {
+            document.getElementById('req-uppercase').classList.remove('valid');
+        }
+
+        // Check lowercase
+        if (/[a-z]/.test(password)) {
+            document.getElementById('req-lowercase').classList.add('valid');
+        } else {
+            document.getElementById('req-lowercase').classList.remove('valid');
+        }
+
+        // Check number
+        if (/[0-9]/.test(password)) {
+            document.getElementById('req-number').classList.add('valid');
+        } else {
+            document.getElementById('req-number').classList.remove('valid');
+        }
+
+        // Check special character
+        if (/[!@#$%^&*]/.test(password)) {
+            document.getElementById('req-special').classList.add('valid');
+        } else {
+            document.getElementById('req-special').classList.remove('valid');
+        }
+    });
+</script>
 @endsection
